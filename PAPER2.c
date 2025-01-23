@@ -102,3 +102,25 @@ struct Node* insert(struct Node** poly,int coeff,int expo){
         temp->next = newNode;
     }
 }
+
+struct Node2{
+    int data;
+    struct Node2* next;
+};
+
+struct Node* createNode(int val){
+    struct Node2* newNode = (struct Node2*)malloc(sizeof(struct Node2));
+    newNode->data = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertAfter(struct Node2* prevNode,int val){
+    if(prevNode==NULL){
+        printf("Previous Node cannot be NULL");
+        return;
+    }
+    struct Node2* newNode = createNode(val);
+    newNode->next = prevNode->next;
+    prevNode->next = newNode;
+}
