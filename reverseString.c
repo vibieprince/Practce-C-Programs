@@ -1,68 +1,59 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdbool.h> // For using bool return type in function
+#include<string.h>
+#define MAX 100
 
-#define MAX 100  // Maximum string length
-
-// Stack structure
-struct Stack {
+struct Stack{
+    int arr[MAX];
     int top;
-    char arr[MAX];
 };
 
-// Initialize stack
-void initStack(struct Stack* s) {
+void initStack(struct Stack *s){
     s->top = -1;
 }
 
-// Check if stack is empty
-int isEmpty(struct Stack* s) {
+bool isFull(struct Stack *s){
+    return s->top == MAX-1;
+}
+
+bool isEmpty(struct Stack *s){
     return s->top == -1;
 }
 
-// Push operation
-void push(struct Stack* s, char value) {
-    if (s->top == MAX - 1) {
-        printf("Stack Overflow!\n");
+void push(struct Stack *s,int val){
+    if(isFull(s)){
+        perror("Stack overflow\n");
         return;
     }
-    s->arr[++(s->top)] = value;
+    s->arr[++s->top] = val;
 }
 
-// Pop operation
-char pop(struct Stack* s) {
-    if (isEmpty(s)) {
-        printf("Stack Underflow!\n");
-        return '\0';
+int pop(struct Stack *s){
+    if(isEmpty(s)){
+        perror("Stack undeflow\n");
+        return -1;
     }
-    return s->arr[(s->top)--];
+    return s->arr[s->top--];
 }
 
-// Function to reverse a string using stack
-void reverseString(char str[]) {
+void reverseString(char str[]){
     struct Stack s;
     initStack(&s);
+    int n = strlen(str);
+
+    for(int i=0;i<n;i++)
+       push(&s,str[i]);
     
-    int len = strlen(str);
-
-    // Push all characters onto stack
-    for (int i = 0; i < len; i++)
-        push(&s, str[i]);
-
-    // Pop characters to get them in reverse order
-    for (int i = 0; i < len; i++)
-        str[i] = pop(&s);
+    for(int i=0;i<n;i++)
+       str[i] = pop(&s);
 }
 
-int main() {
+int main(){
     char str[MAX];
-
-    printf("Enter a string: ");
-    gets(str);  // Read input string
-
+    printf("Enter the string : ");
+    gets(str);
+    printf("Original String : %s\n",str);
     reverseString(str);
-
-    printf("Reversed string: %s\n", str);
-
+    printf("Reversed String : %s",str);
     return 0;
 }
